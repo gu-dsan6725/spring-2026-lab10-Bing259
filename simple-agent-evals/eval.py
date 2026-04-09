@@ -31,7 +31,7 @@ from autoevals.llm import (
 )
 from braintrust import Eval
 from dotenv import load_dotenv
-from openai import OpenAI
+from openai import AsyncOpenAI
 
 
 # Configure logging
@@ -54,7 +54,7 @@ EVAL_JUDGE_MODEL = "claude-sonnet-4-6"
 ANTHROPIC_OPENAI_BASE_URL = "https://api.anthropic.com/v1/"
 
 
-def _create_judge_client() -> OpenAI:
+def _create_judge_client() -> AsyncOpenAI:
     """
     Create an OpenAI-compatible client pointing at Anthropic's API.
 
@@ -62,13 +62,13 @@ def _create_judge_client() -> OpenAI:
     an OpenAI-compatible endpoint so we can use Claude as the judge model.
 
     Returns:
-        OpenAI client configured for Anthropic
+        AsyncOpenAI client configured for Anthropic
     """
     anthropic_api_key = os.getenv("ANTHROPIC_API_KEY")
     if not anthropic_api_key:
         raise ValueError("ANTHROPIC_API_KEY not set in environment")
 
-    return OpenAI(
+    return AsyncOpenAI(
         api_key=anthropic_api_key,
         base_url=ANTHROPIC_OPENAI_BASE_URL,
     )
